@@ -9,7 +9,7 @@ def extractor():
     return FeatureExtractor
 
 
-def test_extractor_from_name(extractor):
+def test_extract_from_name(extractor):
     """
     Dosya adından ve uzantısından anlamsız karakterlerin (alt çizgi vb.)
     temizlenip düzgün bir metin çıkarıldığını test eder.
@@ -17,7 +17,7 @@ def test_extractor_from_name(extractor):
     file_name = "2026_Yillik_Finans_Raporu_v2.pdf"
     features = extractor.extract_from_name(file_name)
 
-    assert "2026_Yillik_Finans_Raporu_v2.pdf" in features
+    assert "2026 Yillik Finans Raporu v2" in features, f"temizhali = {features}"
     assert "pdf" in features
 
 
