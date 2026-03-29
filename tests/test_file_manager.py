@@ -6,18 +6,18 @@ from smartosorganizer.core.file_manager import FileManager
 @pytest.fixture
 def file_manager():
     """Her test için temiz instance oluşturur"""
-    return FileManager
+    return FileManager()
 
 
 def test_ensure_directory_creates_folder_if_missing(tmp_path, file_manager):
     """Klasör yoksa file manager bunu oluşturur mu test eder"""
     target_dir = tmp_path / "Documents" / "PDF_Files"
 
-    assert not target_dir.exits()
+    assert not target_dir.exists()
 
     file_manager.ensure_directory(str(target_dir))
 
-    assert target_dir.exits()
+    assert target_dir.exists()
     assert target_dir.is_dir()
 
 
@@ -28,7 +28,7 @@ def test_move_file_successfully(tmp_path, file_manager):
     source_dir.mkdir()
     target_dir.mkdir()
 
-    test_file = tmp_path / source_dir
+    test_file = source_dir / "test.txt"
     test_file.write_text("TEST")
     destination = file_manager.move_file(str(test_file), str(target_dir))
 
