@@ -1,0 +1,25 @@
+# CI ortamı için bağımlılıklar (platform-bağımsız)
+# pywin32 hariç tutulmuştur çünkü sadece Windows'ta çalışır
+
+# Dosya sistemi olaylarını izleme
+watchdog>=3.0.0
+
+# Komut satırı arayüzü
+typer>=0.9.0
+
+# Makine Öğrenimi ve Veri İşleme
+scikit-learn>=1.3.0
+numpy>=1.25.0
+joblib>=1.3.0
+
+# İçerik Okuma
+PyMuPDF>=1.23.0
+python-docx>=0.8.11
+
+# Test araçları
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.1
+
+# Kod kalitesi
+flake8>=6.1.0
