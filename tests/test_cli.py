@@ -11,10 +11,10 @@ def test_cli_star_command(mocker):
     """
 
     mock_start = mocker.patch("smartosorganizer.cli.start_daemon")
-    result = runner.invoke(app, "[start]")
+    result = runner.invoke(app, ["start"])
 
     assert result.exit_code == 0
-    assert "SmartOSOrganizer başlatılıyor" in result.stdout
+    assert "SmartOSOrganizer başlatılıyor..." in result.stdout
     mock_start.assert_called_once()
 
 

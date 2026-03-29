@@ -9,24 +9,24 @@ app = typer.Typer(
 )
 
 
-@app.command
+@app.command()
 def start():
     """Arka plan sınıflandırma hizmetini (daemon) başlatır."""
     typer.echo("SmartOSOrganizer başlatılıyor...")
     start_daemon()
 
 
-@app.command
+@app.command()
 def stop():
     """Arka plan sınıflandırma hizmetini (daemon) durdurur."""
     typer.echo("SmartOSOrganizer durduruluyor...")
     stop_daemon()
 
 
-@app.command
-def get_status():
+@app.command()
+def status():
     """Arka plan sınıflandırma hizmetini (daemon) durumunu gösterir."""
-    cur_status = get_daemon_status
+    cur_status = get_daemon_status()
     typer.echo(f"Durum: {cur_status}")
 
 
