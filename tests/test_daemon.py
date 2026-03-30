@@ -1,4 +1,5 @@
 import pytest
+from pathlib import Path
 from smartosorganizer.daemon import SmartDaemon
 
 
@@ -56,7 +57,7 @@ def test_process_new_file_orchestration(daemon):
     daemon.classifier.predict_category.assert_called_once_with(test_file_path)
 
     # FileManager'a dosyayı "Belgeler" klasörüne taşıması söylenmiş mi?
-    expected_target_dir = "C:\\Fake\\Organized\\Belgeler"
+    expected_target_dir = str(Path("C:/Fake/Organized") / "Belgeler")
     daemon.file_manager.move_file.assert_called_once_with(
         test_file_path, expected_target_dir
     )
