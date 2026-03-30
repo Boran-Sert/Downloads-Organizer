@@ -17,11 +17,9 @@ class SmartDaemon:
         self.target_base_dir = Path(target_base_dir)
         self.is_running = False
 
-        # Alt modüllerin başlatılması (Composition)
         self.classifier = SmartClassifier()
         self.file_manager = FileManager()
 
-        # Watcher'a "yeni dosya bulduğunda bu fonksiyonu çağır"
         self.watcher = DirectoryWatcher(
             directories=self.watch_dirs, on_file_detected=self._process_new_file
         )
@@ -38,26 +36,37 @@ class SmartDaemon:
             self.watcher.stop()
             self.is_running = False
 
+    def scan_directories(self) -> None:
+        """
+        İzlenen dizinlerde (Masaüstü, İndirilenler vb.) halihazırda bulunan
+        tüm eski dosyaları tarar ve sınıflandırma sürecine sokar.
+        """
+        for watch_dir in self.watch_dirs:
+            dir_path = Path(watch_dir)
+
+            if not dir_path.exists():
+                continue
+
+            for file_path in dir_path.iterdir():
+                if file_path.is_file():
+                    self._process_new_file(str(file_path))
+
     def _process_new_file(self, file_path: str) -> None:
-        """
-        [KRİTİK İŞ AKIŞI] Watcher yeni dosya bulduğunda burası tetiklenir.
-        1. Sınıflandırıcıya kategoriyi sorar.
-        2. Hedef klasör yolunu oluşturur.
-        3. Dosya yöneticisine taşıma emri verir.
-        """
-        # 1. Aşama: Yapay Zeka Kararı
-        category = self.classifier.predict_category(file_path)
+        """Watcher veya tarayıcı yeni dosya bulduğunda burası tetiklenir."""
+        try:
+            category = self.classifier.predict_category(file_path)
+            target_dir = self.target_base_dir / category
+            self.file_manager.move_file(file_path, str(target_dir))
 
-        # 2. Aşama: Hedef Dizin (Örn: C:/SmartOrganizer/Belgeler)
-        target_dir = self.target_base_dir / category
+        except PermissionError:
+            # WinError 32: Dosya o an başka bir programda açıksa programı çökertme, sessizce atla.
+            print(f"Uyarı: '{Path(file_path).name}' şu anda açık olduğu için atlandı.")
 
-        # 3. Aşama: Fiziksel Taşıma
-        self.file_manager.move_file(file_path, str(target_dir))
+        except Exception as e:
+            # Olası diğer beklenmedik hataları yakala ve arka plan hizmetinin çökmesini engelle.
+            print(f"Hata: '{Path(file_path).name}' işlenirken bir sorun oluştu -> {e}")
 
 
-# --- CLI ENTEGRASYONU İÇİN YARDIMCI FONKSİYONLAR ---
-
-# Bellekte tek bir Daemon örneği (Singleton benzeri) tutmak için global değişken
 _active_daemon: Optional[SmartDaemon] = None
 
 
@@ -65,7 +74,6 @@ def start_daemon() -> None:
     """CLI 'start' komutu tarafından çağrılır."""
     global _active_daemon
     if _active_daemon is None:
-        # TODO: Şimdilik varsayılan kullanıcı yollarını alıyoruz (İleride config'e bağlanabilir)
         user_home = Path.home()
         downloads_dir = str(user_home / "Downloads")
         desktop_dir = str(user_home / "Desktop")
@@ -90,3 +98,16 @@ def get_daemon_status() -> str:
     if _active_daemon and _active_daemon.is_running:
         return "Çalışıyor"
     return "Durduruldu"
+
+
+def scan_all_directories() -> None:
+    """CLI 'scan' komutu tarafından çağrılır. Geriye dönük toplu tarama yapar."""
+    user_home = Path.home()
+    downloads_dir = str(user_home / "Downloads")
+    desktop_dir = str(user_home / "Desktop")
+    organized_dir = str(user_home / "SmartOrganizer")
+
+    scanner_daemon = SmartDaemon(
+        watch_dirs=[downloads_dir, desktop_dir], target_base_dir=organized_dir
+    )
+    scanner_daemon.scan_directories()

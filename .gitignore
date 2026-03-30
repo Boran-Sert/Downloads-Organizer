@@ -1,4 +1,10 @@
-# Byte-compiled / optimized / DLL files
+# ============================================================
+#  SmartOSOrganizer - .gitignore
+# ============================================================
+
+# ──────────────────────────────────────────────────────────────
+# Python Bytecode & Cache
+# ──────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
@@ -6,7 +12,9 @@ __pycache__/
 # C extensions
 *.so
 
-# Distribution / packaging
+# ──────────────────────────────────────────────────────────────
+# Distribution / Packaging
+# ──────────────────────────────────────────────────────────────
 .Python
 build/
 develop-eggs/
@@ -27,7 +35,6 @@ share/python-wheels/
 MANIFEST
 
 # PyInstaller
-#  Often these are Python scripts but they can contain executable code
 *.manifest
 *.spec
 
@@ -35,7 +42,9 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# ──────────────────────────────────────────────────────────────
+# Test / Coverage Reports
+# ──────────────────────────────────────────────────────────────
 htmlcov/
 .tox/
 .nox/
@@ -52,69 +61,9 @@ coverage.xml
 .hypothesis/
 .run/
 
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-#   For a library or package, you might want to ignore these files since the Python version is
-#   usually managed by the user.
-# .python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or even
-#   fail to install relevant dependencies on a remote machine.
-#Pipfile.lock
-
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
-
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#pdm.lock
-
-# PEP 582; used by e.g. github.com/pdm-project/pdm
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
+# ──────────────────────────────────────────────────────────────
+# Virtual Environments
+# ──────────────────────────────────────────────────────────────
 .env
 .venv
 env/
@@ -123,34 +72,9 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-# PyCharm
-#  JetBrains specific template is located in a separate file, as it can be shared with other IDEs
-.idea/
-
+# ──────────────────────────────────────────────────────────────
+# IDE / Editor Settings
+# ──────────────────────────────────────────────────────────────
 # VS Code
 .vscode/
 !.vscode/settings.json
@@ -159,11 +83,66 @@ cython_debug/
 !.vscode/extensions.json
 *.code-workspace
 
-# Models (Requested for this project)
-models/
+# PyCharm / IntelliJ
+.idea/
 
-# OS specific (Windows)
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# ──────────────────────────────────────────────────────────────
+# Proje Spesifik - Kişisel Veri & Modeller
+# ──────────────────────────────────────────────────────────────
+
+# Eğitilmiş ML modelleri (.pkl dosyaları kişisel veriye bağlıdır)
+models/*.pkl
+
+# Kişisel veri setleri (kullanıcının kendi dosya bilgileri)
+data/*.csv
+
+# csv.py - Lokal veri seti oluşturma scripti (geliştirme aracı)
+csv.py
+
+# ──────────────────────────────────────────────────────────────
+# OS Specific
+# ──────────────────────────────────────────────────────────────
+
+# Windows
 Thumbs.db
 desktop.ini
 $RECYCLE.BIN/
 *.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ──────────────────────────────────────────────────────────────
+# Miscellaneous
+# ──────────────────────────────────────────────────────────────
+*.log
+*.mo
+*.pot
+__pypackages__/
+.pybuilder/
+target/
+.ipynb_checkpoints
+profile_default/
+ipython_config.py
+docs/_build/
+/site
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+cython_debug/
+celerybeat-schedule
+celerybeat.pid
+*.sage.py

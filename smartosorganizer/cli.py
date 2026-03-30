@@ -1,6 +1,10 @@
 import typer
-
-from smartosorganizer.daemon import start_daemon, stop_daemon, get_daemon_status
+from smartosorganizer.daemon import (
+    start_daemon,
+    stop_daemon,
+    get_daemon_status,
+    scan_all_directories,
+)
 
 # Typer uygulamasını başlat
 app = typer.Typer(
@@ -28,6 +32,18 @@ def status():
     """Arka plan sınıflandırma hizmetini (daemon) durumunu gösterir."""
     cur_status = get_daemon_status()
     typer.echo(f"Durum: {cur_status}")
+
+
+@app.command()
+def scan():
+    """Geçmişte birikmiş tüm dosyaları tek seferde tarar ve düzenler."""
+    typer.echo(
+        "Geçmiş dosyalar taranıyor ve düzenleniyor. Dosya sayısına göre bu işlem biraz sürebilir..."
+    )
+    scan_all_directories()
+    typer.echo(
+        "Tarama ve düzenleme işlemi başarıyla tamamlandı! Masaüstün artık tertemiz."
+    )
 
 
 if __name__ == "__main__":
