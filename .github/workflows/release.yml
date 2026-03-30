@@ -1,0 +1,32 @@
+name: Auto Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Tag ve sürüm oluşturmak için GitHub Token'a yazma izni verilir
+
+    steps:
+      - name: İşletim Sistemine Kodu Çek (Checkout)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Geçmiş commitlere bakarak versiyon hesaplayabilmesi için tüm repo geçmişini çeker
+
+      - name: Versiyonu Hesapla ve Tag Oluştur
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch # Eğer commit mesajında 'feat' veya 'fix' belirtilmediyse varsayılan olarak patch (v1.0.1) artsın
+
+      - name: Otomatik Sürüm (Release) Yayınla
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          name: Sürüm (Release) ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }} # Sürüme hangi commitlerin dahil olduğunu otomatik yazar
