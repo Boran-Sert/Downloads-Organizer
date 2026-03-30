@@ -8,7 +8,11 @@ except FileNotFoundError:
 
 try:
     with open("requirements.txt", "r", encoding="utf-8") as f:
-        requirements = f.read().splitlines()
+        requirements = [
+            line.split("#")[0].strip() 
+            for line in f.read().splitlines() 
+            if line.strip() and not line.strip().startswith("#")
+        ]
 except FileNotFoundError:
     requirements = []
 
